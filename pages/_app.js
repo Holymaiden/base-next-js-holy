@@ -1,5 +1,4 @@
-import "../styles/globals.css";
-// scroll bar
+// ? scroll bar
 import "simplebar/src/simplebar.css";
 
 import PropTypes from "prop-types";
