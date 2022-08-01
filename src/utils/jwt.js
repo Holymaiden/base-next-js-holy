@@ -1,10 +1,10 @@
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 //
-import axios from './axios';
+import axios from "./axios";
 
 // ----------------------------------------------------------------------
 
-const isValidToken = (accessToken) => {
+function isValidToken(accessToken) {
   if (!accessToken) {
     return false;
   }
@@ -12,7 +12,7 @@ const isValidToken = (accessToken) => {
   const currentTime = Date.now() / 1000;
 
   return decoded.exp > currentTime;
-};
+}
 
 //  const handleTokenExpired = (exp) => {
 //   let expiredTimer;
@@ -27,17 +27,17 @@ const isValidToken = (accessToken) => {
 //   }, timeLeft);
 // };
 
-const setSession = (accessToken) => {
+function setSession(accessToken) {
   if (accessToken) {
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     // This function below will handle when token is expired
     // const { exp } = jwtDecode(accessToken);
     // handleTokenExpired(exp);
   } else {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem("accessToken");
     delete axios.defaults.headers.common.Authorization;
   }
-};
+}
 
 export { isValidToken, setSession };

@@ -1,4 +1,6 @@
 import "../styles/globals.css";
+// scroll bar
+import "simplebar/src/simplebar.css";
 
 import PropTypes from "prop-types";
 import cookie from "cookie";
@@ -14,6 +16,7 @@ import { getSettings } from "../src/utils/settings";
 import { SettingsProvider } from "../src/contexts/SettingsContext";
 import { CollapseDrawerProvider } from "../src/contexts/CollapseDrawerContext";
 // ? components
+import Settings from "../src/components/settings";
 import NotistackProvider from "../src/components/NotistackProvider";
 import ThemeColorPresets from "../src/components/ThemeColorPresets";
 import MotionLazyContainer from "../src/components/animate/MotionLazyContainer";
@@ -42,6 +45,7 @@ export default function MyApp(props) {
             <NotistackProvider>
               <MotionLazyContainer>
                 <ThemeColorPresets>
+                  <Settings />
                   {getLayout(<Component {...pageProps} />)}
                 </ThemeColorPresets>
               </MotionLazyContainer>
