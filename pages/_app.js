@@ -22,9 +22,10 @@ import ProgressBar from "../src/components/ProgressBar";
 import NotistackProvider from "../src/components/NotistackProvider";
 import ThemeColorPresets from "../src/components/ThemeColorPresets";
 import MotionLazyContainer from "../src/components/animate/MotionLazyContainer";
-
 // ? theme
 import ThemeProvider from "../src/theme";
+// ? Auth
+import { AuthProvider } from "../src/contexts/JWTContext";
 
 MyApp.propTypes = {
   Component: PropTypes.func,
@@ -41,25 +42,27 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
-      <CollapseDrawerProvider>
-        <SettingsProvider defaultSettings={settings}>
-          <ThemeProvider>
-            <NotistackProvider>
-              <MotionLazyContainer>
-                <ThemeColorPresets>
-                  <RtlLayout>
-                    <Settings />
-                    <ProgressBar />
-                    {getLayout(<Component {...pageProps} />)}
-                  </RtlLayout>
-                </ThemeColorPresets>
-              </MotionLazyContainer>
-            </NotistackProvider>
-          </ThemeProvider>
-        </SettingsProvider>
-      </CollapseDrawerProvider>
-      {/* </LocalizationProvider> */}
+      <AuthProvider>
+        {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
+        <CollapseDrawerProvider>
+          <SettingsProvider defaultSettings={settings}>
+            <ThemeProvider>
+              <NotistackProvider>
+                <MotionLazyContainer>
+                  <ThemeColorPresets>
+                    <RtlLayout>
+                      <Settings />
+                      <ProgressBar />
+                      {getLayout(<Component {...pageProps} />)}
+                    </RtlLayout>
+                  </ThemeColorPresets>
+                </MotionLazyContainer>
+              </NotistackProvider>
+            </ThemeProvider>
+          </SettingsProvider>
+        </CollapseDrawerProvider>
+        {/* </LocalizationProvider> */}
+      </AuthProvider>
     </>
   );
 }
