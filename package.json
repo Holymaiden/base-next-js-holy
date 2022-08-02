@@ -13,6 +13,7 @@
     "@emotion/react": "^11.10.0",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@hookform/resolvers": "^2.9.7",
     "@iconify/react": "^3.2.2",
     "@mui/lab": "^5.0.0-alpha.92",
     "@mui/material": "^5.9.2",
@@ -32,9 +33,13 @@
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.2",
+    "react-hook-form": "^7.34.0",
     "react-lazy-load-image-component": "^1.5.5",
+    "react-quill": "^2.0.0-beta.4",
     "simplebar-react": "^2.4.1",
-    "stylis-plugin-rtl": "^2.1.1"
+    "stylis-plugin-rtl": "^2.1.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "8.20.0",

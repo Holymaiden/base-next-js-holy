@@ -26,6 +26,7 @@ import { PATH_DASHBOARD } from "../../../src/routes/paths";
 // ? hooks
 import useTabs from "../../../src/hooks/useTabs";
 import useSettings from "../../../src/hooks/useSettings";
+import useToggle from "../../../src/hooks/useToggle";
 import useTable, {
   getComparator,
   emptyRows,
@@ -45,11 +46,14 @@ import {
   TableNoData,
   TableSelectedActions,
 } from "../../../src/components/table";
-// sections
+// ? sections
 import {
   UserTableToolbar,
   UserTableRow,
 } from "../../../src/sections/@dashboard/user";
+import UserForm from "../../../src/sections/@dashboard/user/UserForm";
+// ? form
+import { useFormContext } from "react-hook-form";
 
 // ----------------------------------------------------------------------
 
@@ -103,6 +107,12 @@ export default function UserList() {
     onChangePage,
     onChangeRowsPerPage,
   } = useTable();
+
+  const {
+    toggle: openForm,
+    onOpen: onOpenForm,
+    onClose: onCloseForm,
+  } = useToggle();
 
   const { themeStretch } = useSettings();
 
@@ -168,15 +178,20 @@ export default function UserList() {
             { name: "List" },
           ]}
           action={
-            <NextLink href={PATH_DASHBOARD.user.new} passHref>
-              <Button
-                variant="contained"
-                startIcon={<Iconify icon={"eva:plus-fill"} />}
-              >
-                New User
-              </Button>
-            </NextLink>
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon={"eva:plus-fill"} />}
+              onClick={onOpenForm}
+            >
+              New User
+            </Button>
           }
+        />
+        <UserForm
+          onClose={onCloseForm}
+          selected={(selectedId) => userForm?.id === selectedId}
+          onSelect={(value) => setValue("userForm", value)}
+          open={openForm}
         />
 
         <Card>
