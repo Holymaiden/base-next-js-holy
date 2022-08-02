@@ -5,18 +5,16 @@ import { useSnackbar } from "notistack";
 // ? @mui
 import {
   Dialog,
-  ListItemButton,
   Stack,
   Typography,
-  Button,
   FormControlLabel,
   Grid,
   Card,
   Box,
+  Switch,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 // ? components
-import Iconify from "../../../components/Iconify";
 import Scrollbar from "../../../components/Scrollbar";
 // ? form
 import { useForm, Controller } from "react-hook-form";
@@ -51,9 +49,7 @@ UserForm.propTypes = {
 
 export default function UserForm({
   open,
-  selected,
   onClose,
-  onSelect,
   isEdit = false,
   currentUser,
 }) {
@@ -142,7 +138,7 @@ export default function UserForm({
     <Dialog fullWidth maxWidth="lg" open={open} onClose={onClose}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="row" sx={{ py: 2.5, px: 3 }}>
-          <Typography variant="h6"> Select address </Typography>
+          <Typography variant="h6"> {isEdit ? "Edit" : "Add"} User </Typography>
         </Stack>
         <Scrollbar sx={{ p: 3, pt: 0, maxHeight: 80 * 8 }}>
           <Grid container spacing={3}>

@@ -76,7 +76,7 @@ function AuthProvider({ children }) {
         if (true) {
           setSession(accessToken);
 
-          const response = await axios.get("/api/account/my-account");
+          // const response = await axios.get("/api/account/my-account");
           // const { user } = response.data;
           const { user } = {
             email: "admin@gmail.com",

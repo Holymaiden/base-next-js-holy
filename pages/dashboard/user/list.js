@@ -1,7 +1,5 @@
-import { paramCase } from "change-case";
 import { useState } from "react";
 // ? next
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 // ? @mui
 import {
@@ -109,20 +107,26 @@ export default function UserList() {
   } = useTable();
 
   const {
-    toggle: openForm,
-    onOpen: onOpenForm,
-    onClose: onCloseForm,
+    toggle: openFormNew,
+    onOpen: onOpenFormNew,
+    onClose: onCloseFormNew,
+  } = useToggle();
+
+  const {
+    toggle: openFormEdit,
+    onOpen: onOpenFormEdit,
+    onClose: onCloseFormEdit,
   } = useToggle();
 
   const { themeStretch } = useSettings();
-
-  const { push } = useRouter();
 
   const [tableData, setTableData] = useState(_userList);
 
   const [filterName, setFilterName] = useState("");
 
   const [filterRole, setFilterRole] = useState("all");
+
+  const [selectedData, setSelectedData] = useState(null);
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } =
     useTabs("all");
@@ -148,8 +152,9 @@ export default function UserList() {
     setTableData(deleteRows);
   };
 
-  const handleEditRow = (id) => {
-    push(PATH_DASHBOARD.user.edit(paramCase(id)));
+  const handleEditRow = (data) => {
+    onOpenFormEdit();
+    setSelectedData(data);
   };
 
   const dataFiltered = applySortFilter({
@@ -181,17 +186,20 @@ export default function UserList() {
             <Button
               variant="contained"
               startIcon={<Iconify icon={"eva:plus-fill"} />}
-              onClick={onOpenForm}
+              onClick={onOpenFormNew}
             >
               New User
             </Button>
           }
         />
+        <UserForm onClose={onCloseFormNew} open={openFormNew} />
         <UserForm
-          onClose={onCloseForm}
-          selected={(selectedId) => userForm?.id === selectedId}
+          onClose={onCloseFormEdit}
+          selected={(selectedId) => userFormEdit?.id === selectedId}
           onSelect={(value) => setValue("userForm", value)}
-          open={openForm}
+          open={openFormEdit}
+          isEdit
+          currentUser={selectedData}
         />
 
         <Card>
@@ -270,7 +278,7 @@ export default function UserList() {
                         selected={selected.includes(row.id)}
                         onSelectRow={() => onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.name)}
+                        onEditRow={() => handleEditRow(row)}
                       />
                     ))}
 
