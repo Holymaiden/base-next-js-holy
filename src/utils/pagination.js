@@ -26,7 +26,7 @@ export default async function paginate(page = 1, limit = 5, dataLength) {
     };
   }
 
-  if (startIndex > 0) {
+  if (startIndex > 1) {
     result.previousPage = {
       page: page - 1,
       limit: limit,

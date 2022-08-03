@@ -7,6 +7,7 @@ export default async function handler(req, res) {
     try {
       const { page, limit, search } = req.query;
       const { filter, status } = req.query;
+
       const searchQuery = search
         ? {
             OR: [
@@ -47,7 +48,7 @@ export default async function handler(req, res) {
         skip: paginateResult.currentPage.startIndex - 1,
         take: paginateResult.currentPage.limit,
         orderBy: {
-          CreatedAt: "desc",
+          CreatedAt: req.query.order,
         },
       });
 

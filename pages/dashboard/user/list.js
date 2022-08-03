@@ -23,10 +23,7 @@ import { PATH_DASHBOARD } from "../../../src/routes/paths";
 import useTabs from "../../../src/hooks/useTabs";
 import useSettings from "../../../src/hooks/useSettings";
 import useToggle from "../../../src/hooks/useToggle";
-import useTable, {
-  getComparator,
-  emptyRows,
-} from "../../../src/hooks/useTable";
+import useTable, { emptyRows } from "../../../src/hooks/useTable";
 // ? _mock_
 import { _userList } from "../../../src/_mock";
 // ? layouts
@@ -169,8 +166,8 @@ export default function UserList() {
           filterStatus
       )
       .then((res) => {
-        console.log(res.data.data);
         if (res.data.code !== 200) return alert(res.data.message);
+
         setTableData(res.data.data);
       });
   };
