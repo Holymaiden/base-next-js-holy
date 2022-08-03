@@ -30,10 +30,21 @@ import {
   RHFTextField,
   RHFUploadAvatar,
 } from "../../../components/hook-form";
+import axios from "../../../utils/axios";
 
 // ----------------------------------------------------------------------
 
 const ROLES = [
+  { value: "all", label: "All" },
+  { value: "ux designer", label: "UX Designer" },
+  { value: "full stack designer", label: "Full Stack Designer" },
+  { value: "backend developer", label: "Backend Developer" },
+  { value: "project manager", label: "Project Manager" },
+  { value: "leader", label: "Leader" },
+  { value: "ui designer", label: "UI Designer" },
+  { value: "ui/ux designer", label: "UI/UX Designer" },
+  { value: "front end developer", label: "Frontend Developer" },
+  { value: "full stack developer", label: "Full Stack Developer" },
   { value: "admin", label: "Admin" },
   { value: "user", label: "User" },
 ];
@@ -58,7 +69,7 @@ export default function UserForm({
   const UserSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().required("Email is required").email(),
-    phoneNumber: Yup.string().required("Phone number is required"),
+    phone: Yup.string().required("Phone number is required"),
     address: Yup.string().required("Address is required"),
     role: Yup.string().required("Role Number is required"),
     avatarUrl: Yup.mixed().test(
@@ -72,7 +83,7 @@ export default function UserForm({
     () => ({
       name: currentUser?.name || "",
       email: currentUser?.email || "",
-      phoneNumber: currentUser?.phoneNumber || "",
+      phone: currentUser?.phone || "",
       address: currentUser?.address || "",
       avatarUrl: currentUser?.avatarUrl || "",
       isVerified: currentUser?.isVerified || true,
@@ -107,13 +118,32 @@ export default function UserForm({
     }
   }, [isEdit, currentUser, open]);
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      enqueueSnackbar(!isEdit ? "Create success!" : "Update success!");
-      onClose();
+      data.password = "123456";
+      let JSONdata = JSON.stringify(data);
+
+      await axios
+        .post("/api/user", JSONdata, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(async (res) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+
+          if (res.status !== 200) {
+            return enqueueSnackbar("Error", { variant: "error" });
+          }
+
+          enqueueSnackbar(!isEdit ? "Create success!" : "Update success!");
+        })
+        .finally(() => {
+          reset();
+          onClose();
+        });
     } catch (error) {
+      enqueueSnackbar("Error", { variant: "error" });
       console.error(error);
     }
   };
@@ -261,7 +291,7 @@ export default function UserForm({
                 >
                   <RHFTextField name="name" label="Full Name" />
                   <RHFTextField name="email" label="Email Address" />
-                  <RHFTextField name="phoneNumber" label="Phone Number" />
+                  <RHFTextField name="phone" label="Phone Number" />
                   <RHFTextField name="address" label="Address" />
                   <RHFSelect name="role" label="Role">
                     {ROLES.map((role, i) => (

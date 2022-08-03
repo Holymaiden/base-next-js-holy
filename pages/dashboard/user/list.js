@@ -1,6 +1,4 @@
-import { useState } from "react";
-// ? next
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 // ? @mui
 import {
   Box,
@@ -50,29 +48,17 @@ import {
   UserTableRow,
 } from "../../../src/sections/@dashboard/user";
 import UserForm from "../../../src/sections/@dashboard/user/UserForm";
-// ? form
-import { useFormContext } from "react-hook-form";
+import axios from "../../../src/utils/axios";
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = ["all", "active", "banned"];
 
-const ROLE_OPTIONS = [
-  "all",
-  "ux designer",
-  "full stack designer",
-  "backend developer",
-  "project manager",
-  "leader",
-  "ui designer",
-  "ui/ux designer",
-  "front end developer",
-  "full stack developer",
-];
+const ROLE_OPTIONS = ["all", "admin", "user"];
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", align: "left" },
-  { id: "company", label: "Company", align: "left" },
+  { id: "email", label: "Email", align: "left" },
   { id: "role", label: "Role", align: "left" },
   { id: "isVerified", label: "Verified", align: "center" },
   { id: "status", label: "Status", align: "left" },
@@ -120,7 +106,7 @@ export default function UserList() {
 
   const { themeStretch } = useSettings();
 
-  const [tableData, setTableData] = useState(_userList);
+  const [tableData, setTableData] = useState([]);
 
   const [filterName, setFilterName] = useState("");
 
@@ -157,20 +143,41 @@ export default function UserList() {
     setSelectedData(data);
   };
 
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-    filterRole,
-    filterStatus,
-  });
-
   const denseHeight = dense ? 52 : 72;
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
-    (!dataFiltered.length && !!filterStatus);
+    (!tableData.length && !!filterName) ||
+    (!tableData.length && !!filterRole) ||
+    (!tableData.length && !!filterStatus);
+
+  const getData = () => {
+    axios
+      .get(
+        "/api/user?page=" +
+          (page + 1) +
+          "&limit=" +
+          rowsPerPage +
+          "&sort=" +
+          orderBy +
+          "&order=" +
+          order +
+          "&search=" +
+          filterName +
+          "&filter=" +
+          filterRole +
+          "&status=" +
+          filterStatus
+      )
+      .then((res) => {
+        console.log(res.data.data);
+        if (res.data.code !== 200) return alert(res.data.message);
+        setTableData(res.data.data);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, [page, order, orderBy, rowsPerPage, filterName, filterRole, filterStatus]);
 
   return (
     <Page title="User: List">
@@ -269,18 +276,16 @@ export default function UserList() {
                 />
 
                 <TableBody>
-                  {dataFiltered
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <UserTableRow
-                        key={row.id}
-                        row={row}
-                        selected={selected.includes(row.id)}
-                        onSelectRow={() => onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row)}
-                      />
-                    ))}
+                  {tableData.map((row) => (
+                    <UserTableRow
+                      key={row.id}
+                      row={row}
+                      selected={selected.includes(row.id)}
+                      onSelectRow={() => onSelectRow(row.id)}
+                      onDeleteRow={() => handleDeleteRow(row.id)}
+                      onEditRow={() => handleEditRow(row)}
+                    />
+                  ))}
 
                   <TableEmptyRows
                     height={denseHeight}
@@ -297,13 +302,12 @@ export default function UserList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={tableData.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
               onRowsPerPageChange={onChangeRowsPerPage}
             />
-
             <FormControlLabel
               control={<Switch checked={dense} onChange={onChangeDense} />}
               label="Dense"
@@ -317,37 +321,3 @@ export default function UserList() {
 }
 
 // ----------------------------------------------------------------------
-
-function applySortFilter({
-  tableData,
-  comparator,
-  filterName,
-  filterStatus,
-  filterRole,
-}) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter(
-      (item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
-  }
-
-  if (filterStatus !== "all") {
-    tableData = tableData.filter((item) => item.status === filterStatus);
-  }
-
-  if (filterRole !== "all") {
-    tableData = tableData.filter((item) => item.role === filterRole);
-  }
-
-  return tableData;
-}
