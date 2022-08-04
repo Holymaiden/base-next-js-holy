@@ -1,16 +1,16 @@
-import { forwardRef } from 'react';
-import PropTypes from 'prop-types';
+import { forwardRef } from "react";
+import PropTypes from "prop-types";
 // next
-import Head from 'next/head';
+import Head from "next/head";
 // @mui
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
-const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => (
+const Page = forwardRef(({ children, title = "", meta, ...other }, ref) => (
   <>
     <Head>
-      <title>{`${title} | Minimal-UI`}</title>
+      <title>{`${title} | Dashboard`}</title>
       {meta}
     </Head>
 

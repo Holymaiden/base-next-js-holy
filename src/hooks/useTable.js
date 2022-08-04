@@ -7,7 +7,7 @@ export default function useTable(props) {
 
   const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || "name");
 
-  const [order, setOrder] = useState(props?.defaultOrder || "asc");
+  const [order, setOrder] = useState(props?.defaultOrder || "desc");
 
   const [page, setPage] = useState(props?.defaultCurrentPage || 0);
 
@@ -18,9 +18,9 @@ export default function useTable(props) {
   const [selected, setSelected] = useState(props?.defaultSelected || []);
 
   const onSort = (id) => {
-    const isAsc = orderBy === id && order === "asc";
+    const isDesc = orderBy === id && order === "desc";
     if (id !== "") {
-      setOrder(isAsc ? "desc" : "asc");
+      setOrder(isDesc ? "asc" : "desc");
       setOrderBy(id);
     }
   };

@@ -21,7 +21,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // ? utils
 import { fData } from "../../../utils/formatNumber";
-// components
+// ? components
 import Label from "../../../components/Label";
 import {
   FormProvider,
@@ -123,16 +123,24 @@ export default function UserForm({
       data.password = "123456";
       let JSONdata = JSON.stringify(data);
 
-      await axios
-        .post("/api/user", JSONdata, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+      let resp = async () =>
+        isEdit
+          ? await axios.put("/api/user/" + currentUser.id, JSONdata, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+          : await axios.post("/api/user", JSONdata, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+      resp()
         .then(async (res) => {
           await new Promise((resolve) => setTimeout(resolve, 500));
 
-          if (res.status !== 200) {
+          if (res.data.code !== 200) {
             return enqueueSnackbar("Error", { variant: "error" });
           }
 

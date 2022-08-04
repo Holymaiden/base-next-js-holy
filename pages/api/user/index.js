@@ -44,6 +44,7 @@ export default async function handler(req, res) {
           ...searchQuery,
           ...filterQuery,
           ...statusQuery,
+          DeletedAt: null,
         },
         skip: paginateResult.currentPage.startIndex - 1,
         take: paginateResult.currentPage.limit,

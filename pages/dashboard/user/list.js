@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 // ? @mui
 import {
   Box,
@@ -70,6 +71,8 @@ UserList.getLayout = function getLayout(page) {
 // ----------------------------------------------------------------------
 
 export default function UserList() {
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     dense,
     page,
@@ -123,10 +126,13 @@ export default function UserList() {
     setFilterRole(event.target.value);
   };
 
-  const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    setTableData(deleteRow);
+  const handleDeleteRow = async (id) => {
+    await axios.delete(`/api/user/${id}`).then((res) => {
+      if (res.data.code !== 200)
+        return enqueueSnackbar("Failed to delete user", { variant: "error" });
+      enqueueSnackbar("User deleted", { variant: "success" });
+    });
+    setPage(0);
   };
 
   const handleDeleteRows = (selected) => {
@@ -166,7 +172,8 @@ export default function UserList() {
           filterStatus
       )
       .then((res) => {
-        if (res.data.code !== 200) return alert(res.data.message);
+        if (res.data.code !== 200)
+          return enqueueSnackbar(res.data.message, { variant: "error" });
 
         setTableData(res.data.data);
       });
