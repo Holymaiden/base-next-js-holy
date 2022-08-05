@@ -35,16 +35,6 @@ import axios from "../../../utils/axios";
 // ----------------------------------------------------------------------
 
 const ROLES = [
-  { value: "all", label: "All" },
-  { value: "ux designer", label: "UX Designer" },
-  { value: "full stack designer", label: "Full Stack Designer" },
-  { value: "backend developer", label: "Backend Developer" },
-  { value: "project manager", label: "Project Manager" },
-  { value: "leader", label: "Leader" },
-  { value: "ui designer", label: "UI Designer" },
-  { value: "ui/ux designer", label: "UI/UX Designer" },
-  { value: "front end developer", label: "Frontend Developer" },
-  { value: "full stack developer", label: "Full Stack Developer" },
   { value: "admin", label: "Admin" },
   { value: "user", label: "User" },
 ];
@@ -70,7 +60,6 @@ export default function UserForm({
     name: Yup.string().required("Name is required"),
     email: Yup.string().required("Email is required").email(),
     phone: Yup.string().required("Phone number is required"),
-    address: Yup.string().required("Address is required"),
     role: Yup.string().required("Role Number is required"),
     avatarUrl: Yup.mixed().test(
       "required",
@@ -84,7 +73,6 @@ export default function UserForm({
       name: currentUser?.name || "",
       email: currentUser?.email || "",
       phone: currentUser?.phone || "",
-      address: currentUser?.address || "",
       avatarUrl: currentUser?.avatarUrl || "",
       isVerified: currentUser?.isVerified || true,
       status: currentUser?.status,
@@ -300,7 +288,6 @@ export default function UserForm({
                   <RHFTextField name="name" label="Full Name" />
                   <RHFTextField name="email" label="Email Address" />
                   <RHFTextField name="phone" label="Phone Number" />
-                  <RHFTextField name="address" label="Address" />
                   <RHFSelect name="role" label="Role">
                     {ROLES.map((role, i) => (
                       <option key={i} value={role.value}>

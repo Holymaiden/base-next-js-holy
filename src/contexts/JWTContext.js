@@ -72,21 +72,11 @@ function AuthProvider({ children }) {
       try {
         const accessToken = window.localStorage.getItem("accessToken");
 
-        // if (accessToken && isValidToken(accessToken)) {
-        if (true) {
+        if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          // const response = await axios.get("/api/account/my-account");
-          // const { user } = response.data;
-          const { user } = {
-            email: "admin@gmail.com",
-            password: "123",
-            firstName: "Admin",
-            lastName: "Admin",
-            avatarUrl: "/static/mock-images/avatars/avatar_default.jpg",
-            role: "admin",
-            displayName: "Admin",
-          };
+          const response = await axios.get("/api/user/");
+          const { user } = response.data;
 
           dispatch({
             type: "INITIALIZE",
@@ -120,11 +110,12 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post("/api/account/login", {
+    const response = await axios.post("/api/auth/login", {
       email,
       password,
     });
-    const { accessToken, user } = response.data;
+    const { accessToken, user } = response.data.data;
+    // console.log(accessToken);
 
     setSession(accessToken);
     dispatch({

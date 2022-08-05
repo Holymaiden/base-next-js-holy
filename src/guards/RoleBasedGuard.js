@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { Container, Alert, AlertTitle } from '@mui/material';
+import PropTypes from "prop-types";
+import { Container, Alert, AlertTitle } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ RoleBasedGuard.propTypes = {
 
 const useCurrentRole = () => {
   // Logic here to get current user role
-  const role = 'admin';
+  const role = "admin";
   return role;
 };
 
