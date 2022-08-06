@@ -3,8 +3,7 @@ import message from "../../../src/utils/response";
 import jsonwebtoken from "jsonwebtoken";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST")
-    return message.error(res.message, "Method not allowed");
+  if (req.method !== "POST") return message.error(res, "Method not allowed");
 
   try {
     const user = await prisma.user.findFirst({
@@ -14,7 +13,7 @@ export default async function handler(req, res) {
         DeletedAt: null,
       },
     });
-    if (!user) return message.error(res.message, "User not found");
+    if (!user) return message.error(res, "User not found");
 
     const accessToken = jsonwebtoken.sign(
       {

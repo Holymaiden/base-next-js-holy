@@ -80,78 +80,78 @@ export default function Login() {
   const mdUp = useResponsive("up", "md");
 
   return (
-    //     <GuestGuard>
-    <Page title="Login">
-      <RootStyle>
-        <HeaderStyle>
-          <Logo />
-          {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {""}
-              <NextLink href={PATH_AUTH.register} passHref>
-                <Link variant="subtitle2">Get started</Link>
-              </NextLink>
-            </Typography>
-          )}
-        </HeaderStyle>
-
-        {mdUp && (
-          <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <Image
-              visibleByDefault
-              disabledEffect
-              src="https://minimals.cc/assets/illustrations/illustration_login.png"
-              alt="login"
-            />
-          </SectionStyle>
-        )}
-
-        <Container maxWidth="sm">
-          <ContentStyle>
-            <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
-                </Typography>
-                <Typography sx={{ color: "text.secondary" }}>
-                  Enter your details below.
-                </Typography>
-              </Box>
-
-              <Tooltip title={capitalCase(method)} placement="right">
-                <>
-                  <Image
-                    disabledEffect
-                    alt={method}
-                    src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
-                    sx={{ width: 32, height: 32 }}
-                  />
-                </>
-              </Tooltip>
-            </Stack>
-
-            <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>admin@gmail.com</strong> / password :
-              <strong> admin</strong>
-            </Alert>
-
-            <LoginForm />
-
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{" "}
+    <GuestGuard>
+      <Page title="Login">
+        <RootStyle>
+          <HeaderStyle>
+            <Logo />
+            {smUp && (
+              <Typography variant="body2" sx={{ mt: { md: -2 } }}>
+                Don’t have an account? {""}
                 <NextLink href={PATH_AUTH.register} passHref>
                   <Link variant="subtitle2">Get started</Link>
                 </NextLink>
               </Typography>
             )}
-          </ContentStyle>
-        </Container>
-      </RootStyle>
-    </Page>
-    //     </GuestGuard>
+          </HeaderStyle>
+
+          {mdUp && (
+            <SectionStyle>
+              <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+                Hi, Welcome Back
+              </Typography>
+              <Image
+                visibleByDefault
+                disabledEffect
+                src="https://minimals.cc/assets/illustrations/illustration_login.png"
+                alt="login"
+              />
+            </SectionStyle>
+          )}
+
+          <Container maxWidth="sm">
+            <ContentStyle>
+              <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography variant="h4" gutterBottom>
+                    Sign in to Minimal
+                  </Typography>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    Enter your details below.
+                  </Typography>
+                </Box>
+
+                <Tooltip title={capitalCase(method)} placement="right">
+                  <>
+                    <Image
+                      disabledEffect
+                      alt={method}
+                      src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
+                      sx={{ width: 32, height: 32 }}
+                    />
+                  </>
+                </Tooltip>
+              </Stack>
+
+              <Alert severity="info" sx={{ mb: 3 }}>
+                Use email : <strong>admin@gmail.com</strong> / password :
+                <strong> admin</strong>
+              </Alert>
+
+              <LoginForm />
+
+              {!smUp && (
+                <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                  Don’t have an account?{" "}
+                  <NextLink href={PATH_AUTH.register} passHref>
+                    <Link variant="subtitle2">Get started</Link>
+                  </NextLink>
+                </Typography>
+              )}
+            </ContentStyle>
+          </Container>
+        </RootStyle>
+      </Page>
+    </GuestGuard>
   );
 }
