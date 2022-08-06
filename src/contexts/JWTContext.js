@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 // utils
 import axios from "../utils/axios";
 import { isValidToken, setSession } from "../utils/jwt";
+import jwtdecode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -74,9 +75,10 @@ function AuthProvider({ children }) {
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-
-          const response = await axios.get("/api/user/");
-          const { user } = response.data;
+          const decodedToken = jwtdecode(accessToken);
+          const user = await axios
+            .get("/api/user/" + decodedToken.id)
+            .then((res) => res.data.data);
 
           dispatch({
             type: "INITIALIZE",

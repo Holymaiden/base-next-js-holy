@@ -11,6 +11,7 @@ export default async function handler(req, res) {
         email: req.body.email,
         password: req.body.password,
         DeletedAt: null,
+        status: "active",
       },
     });
     if (!user) return message.error(res, "User not found");

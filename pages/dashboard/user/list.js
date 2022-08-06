@@ -181,6 +181,7 @@ export default function UserList() {
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, order, orderBy, rowsPerPage, filterName, filterRole, filterStatus]);
 
   return (

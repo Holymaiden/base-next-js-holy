@@ -12,7 +12,6 @@ import { LoadingButton } from "@mui/lab";
 import { PATH_AUTH } from "../../../routes/paths";
 // hooks
 import useAuth from "../../../hooks/useAuth";
-import useIsMountedRef from "../../../hooks/useIsMountedRef";
 // components
 import Iconify from "../../../components/Iconify";
 import {
@@ -25,8 +24,6 @@ import {
 
 export default function LoginForm() {
   const { login } = useAuth();
-
-  const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -59,11 +56,9 @@ export default function LoginForm() {
     try {
       await login(data.email, data.password);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       reset();
-      if (isMountedRef.current) {
-        setError("afterSubmit", { ...error, message: error.message });
-      }
+      setError("afterSubmit", { ...error, message: error.data });
     }
   };
 
