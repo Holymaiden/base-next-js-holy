@@ -34,7 +34,7 @@ export default function UserTableRow({
 }) {
   const theme = useTheme();
 
-  const { name, avatarUrl, email, role, isVerified, status } = row;
+  const { name, image, email, role, isVerified, status } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -53,7 +53,7 @@ export default function UserTableRow({
       </TableCell>
 
       <TableCell sx={{ display: "flex", alignItems: "center" }}>
-        <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
+        <Avatar alt={name} src={"/avatar/" + image} sx={{ mr: 2 }} />
         <Typography variant="subtitle2" noWrap>
           {name}
         </Typography>

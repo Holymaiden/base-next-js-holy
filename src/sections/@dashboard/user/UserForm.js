@@ -61,7 +61,7 @@ export default function UserForm({
     email: Yup.string().required("Email is required").email(),
     phone: Yup.string().required("Phone number is required"),
     role: Yup.string().required("Role Number is required"),
-    avatarUrl: Yup.mixed().test(
+    image: Yup.mixed().test(
       "required",
       "Avatar is required",
       (value) => value !== ""
@@ -73,7 +73,7 @@ export default function UserForm({
       name: currentUser?.name || "",
       email: currentUser?.email || "",
       phone: currentUser?.phone || "",
-      avatarUrl: currentUser?.avatarUrl || "",
+      image: currentUser?.image || "",
       isVerified: currentUser?.isVerified || true,
       status: currentUser?.status,
       role: currentUser?.role || "",
@@ -109,18 +109,24 @@ export default function UserForm({
   const onSubmit = async (data) => {
     try {
       data.password = "123456";
-      let JSONdata = JSON.stringify(data);
+      let formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+      formData.append("role", data.role);
+      formData.append("password", data.password);
+      formData.append("image", data.image);
 
       let resp = async () =>
         isEdit
-          ? await axios.put("/api/user/" + currentUser.id, JSONdata, {
+          ? await axios.put("/api/user/" + currentUser.id, formData, {
               headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
               },
             })
-          : await axios.post("/api/user", JSONdata, {
+          : await axios.post("/api/user", formData, {
               headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
               },
             });
 
@@ -150,7 +156,7 @@ export default function UserForm({
 
       if (file) {
         setValue(
-          "avatarUrl",
+          "image",
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -186,7 +192,7 @@ export default function UserForm({
 
                 <Box sx={{ mb: 5 }}>
                   <RHFUploadAvatar
-                    name="avatarUrl"
+                    name="image"
                     accept="image/*"
                     maxSize={3145728}
                     onDrop={handleDrop}
